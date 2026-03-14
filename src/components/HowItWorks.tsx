@@ -114,33 +114,9 @@ const HowItWorks = () => {
         </div>
 
         <div className="space-y-24 sm:space-y-32">
-          {steps.map((step, i) => {
-            const ref = useRef(null);
-            const isInView = useInView(ref, { once: true, margin: "-100px" });
-            const isReversed = i % 2 === 1;
-
-            return (
-              <motion.div
-                ref={ref}
-                key={step.badge}
-                initial={{ opacity: 0, y: 40 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6 }}
-                className={`flex flex-col ${isReversed ? "lg:flex-row-reverse" : "lg:flex-row"} gap-10 lg:gap-16 items-center`}
-              >
-                <div className="lg:w-[40%] space-y-4">
-                  <span className="section-badge">{step.badge}</span>
-                  <h2 className="font-serif text-2xl sm:text-4xl text-foreground leading-tight whitespace-pre-line">
-                    {step.title}
-                  </h2>
-                  <p className="text-base text-muted-foreground leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
-                <div className="lg:w-[60%]">{step.visual}</div>
-              </motion.div>
-            );
-          })}
+          {steps.map((step, i) => (
+            <StepItem key={step.badge} step={step} isReversed={i % 2 === 1} />
+          ))}
         </div>
       </div>
     </section>
