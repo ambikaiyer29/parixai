@@ -1,36 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { toast } from "sonner";
+import { useEffect } from "react";
 
-const loginSchema = z.object({
-  email: z.string().email("Enter a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-});
-
-const signupSchema = z.object({
-  email: z.string().email("Enter a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
-
-type LoginFormData = z.infer<typeof loginSchema>;
-type SignupFormData = z.infer<typeof signupSchema>;
+const APP_URL = "https://app.parixai.ai";
 
 interface AuthModalProps {
   mode: "login" | "signup";
   onClose: () => void;
 }
 
-export default function AuthModal({ mode: initialMode, onClose }: AuthModalProps) {
-  const [mode, setMode] = useState<"login" | "signup">(initialMode);
-
+export default function AuthModal({ mode, onClose }: AuthModalProps) {
   // Close on Escape
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -44,32 +23,7 @@ export default function AuthModal({ mode: initialMode, onClose }: AuthModalProps
     return () => { document.body.style.overflow = ""; };
   }, []);
 
-  const loginForm = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "" },
-  });
-
-  const signupForm = useForm<SignupFormData>({
-    resolver: zodResolver(signupSchema),
-    defaultValues: { email: "", password: "", confirmPassword: "" },
-  });
-
-  const handleLogin = async (data: LoginFormData) => {
-    // Simulate async call
-    await new Promise((r) => setTimeout(r, 800));
-    toast.success("Welcome back! You're on the waitlist.", {
-      description: `We'll reach out to ${data.email} when your account is ready.`,
-    });
-    onClose();
-  };
-
-  const handleSignup = async (data: SignupFormData) => {
-    await new Promise((r) => setTimeout(r, 800));
-    toast.success("You're on the waitlist!", {
-      description: `We'll send early access details to ${data.email}.`,
-    });
-    onClose();
-  };
+  const href = mode === "login" ? `${APP_URL}/login` : `${APP_URL}/signup`;
 
   return (
     <div
@@ -80,7 +34,7 @@ export default function AuthModal({ mode: initialMode, onClose }: AuthModalProps
       <div className="absolute inset-0 bg-foreground/30 backdrop-blur-sm" />
 
       {/* Modal */}
-      <div className="relative bg-background rounded-2xl border border-border shadow-xl w-full max-w-md p-8">
+      <div className="relative bg-background rounded-2xl border border-border shadow-xl w-full max-w-md p-8 text-center">
         {/* Close button */}
         <button
           onClick={onClose}
@@ -97,130 +51,36 @@ export default function AuthModal({ mode: initialMode, onClose }: AuthModalProps
           <span className="font-serif text-2xl text-foreground">parixai</span>
         </div>
 
-        {/* Tab switcher */}
-        <div className="flex rounded-full border border-border p-1 mb-6 bg-secondary">
-          <button
-            onClick={() => setMode("login")}
-            className={`flex-1 rounded-full py-1.5 text-sm font-medium transition-colors ${
-              mode === "login"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            Log In
-          </button>
-          <button
-            onClick={() => setMode("signup")}
-            className={`flex-1 rounded-full py-1.5 text-sm font-medium transition-colors ${
-              mode === "signup"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            Sign Up
-          </button>
-        </div>
+        <p className="text-muted-foreground text-sm mb-6">
+          {mode === "login"
+            ? "Sign in to your parixai dashboard."
+            : "Create your parixai account and start running LLM experiments."}
+        </p>
 
-        {mode === "login" ? (
-          <form onSubmit={loginForm.handleSubmit(handleLogin)} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Email</label>
-              <input
-                {...loginForm.register("email")}
-                type="email"
-                placeholder="you@company.com"
-                className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-              />
-              {loginForm.formState.errors.email && (
-                <p className="mt-1 text-xs text-destructive">{loginForm.formState.errors.email.message}</p>
-              )}
-            </div>
+        <a
+          href={href}
+          className="btn-primary w-full block text-center"
+        >
+          {mode === "login" ? "Log In →" : "Sign Up →"}
+        </a>
 
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Password</label>
-              <input
-                {...loginForm.register("password")}
-                type="password"
-                placeholder="••••••••"
-                className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-              />
-              {loginForm.formState.errors.password && (
-                <p className="mt-1 text-xs text-destructive">{loginForm.formState.errors.password.message}</p>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              disabled={loginForm.formState.isSubmitting}
-              className="btn-primary w-full disabled:opacity-60"
-            >
-              {loginForm.formState.isSubmitting ? "Logging in…" : "Log In"}
-            </button>
-
-            <p className="text-center text-xs text-muted-foreground">
-              parixai cloud is in early access.{" "}
-              <button type="button" onClick={() => setMode("signup")} className="underline hover:text-foreground">
-                Join the waitlist
-              </button>
-            </p>
-          </form>
-        ) : (
-          <form onSubmit={signupForm.handleSubmit(handleSignup)} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Work Email</label>
-              <input
-                {...signupForm.register("email")}
-                type="email"
-                placeholder="you@company.com"
-                className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-              />
-              {signupForm.formState.errors.email && (
-                <p className="mt-1 text-xs text-destructive">{signupForm.formState.errors.email.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Password</label>
-              <input
-                {...signupForm.register("password")}
-                type="password"
-                placeholder="Min. 8 characters"
-                className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-              />
-              {signupForm.formState.errors.password && (
-                <p className="mt-1 text-xs text-destructive">{signupForm.formState.errors.password.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Confirm Password</label>
-              <input
-                {...signupForm.register("confirmPassword")}
-                type="password"
-                placeholder="••••••••"
-                className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-              />
-              {signupForm.formState.errors.confirmPassword && (
-                <p className="mt-1 text-xs text-destructive">{signupForm.formState.errors.confirmPassword.message}</p>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              disabled={signupForm.formState.isSubmitting}
-              className="btn-primary w-full disabled:opacity-60"
-            >
-              {signupForm.formState.isSubmitting ? "Joining waitlist…" : "Join Waitlist →"}
-            </button>
-
-            <p className="text-center text-xs text-muted-foreground">
+        <p className="mt-4 text-xs text-muted-foreground">
+          {mode === "login" ? (
+            <>
+              Don&apos;t have an account?{" "}
+              <a href={`${APP_URL}/signup`} className="underline hover:text-foreground">
+                Sign up
+              </a>
+            </>
+          ) : (
+            <>
               Already have an account?{" "}
-              <button type="button" onClick={() => setMode("login")} className="underline hover:text-foreground">
+              <a href={`${APP_URL}/login`} className="underline hover:text-foreground">
                 Log in
-              </button>
-            </p>
-          </form>
-        )}
+              </a>
+            </>
+          )}
+        </p>
       </div>
     </div>
   );

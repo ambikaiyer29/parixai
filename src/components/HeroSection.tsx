@@ -46,11 +46,11 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
           className="mt-8 flex items-center justify-center gap-4 flex-wrap"
         >
-          <a href="https://github.com/featurellm/featurellm" className="btn-primary">
-            Self-Host for Free →
+          <a href="https://app.parixai.ai/signup" className="btn-primary">
+            Get Started Free →
           </a>
-          <a href="https://github.com/featurellm/featurellm" className="btn-outline">
-            View on GitHub ↗
+          <a href="https://github.com/ambikaiyer29/featurellm-oss" className="btn-outline">
+            Self-Host ↗
           </a>
         </motion.div>
 
@@ -60,7 +60,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.7 }}
           className="mt-4 text-xs text-muted-foreground"
         >
-          Free to self-host · No credit card required
+          Cloud hosted · Free to self-host · No credit card required
         </motion.p>
       </div>
     </section>
