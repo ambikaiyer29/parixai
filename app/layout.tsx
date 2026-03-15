@@ -4,8 +4,33 @@ import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://parixai.ai'),
   title: "parixai — LLM Experiment Runner for Product Teams",
   description: "Define test sets, version prompts, and compare GPT-4o, Claude, Gemini side-by-side. Free to self-host.",
+  alternates: {
+    canonical: 'https://parixai.ai',
+  },
+  openGraph: {
+    title: 'parixai — LLM Experiment Runner for Product Teams',
+    description: 'Define test sets, version prompts, and compare GPT-4o, Claude, Gemini side-by-side. Free to self-host.',
+    url: 'https://parixai.ai',
+    siteName: 'parixai',
+    images: [
+      {
+        url: '/assets/hero-illustration.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'parixai LLM experiment runner dashboard',
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'parixai — LLM Experiment Runner for Product Teams',
+    description: 'Define test sets, version prompts, and compare GPT-4o, Claude, Gemini side-by-side. Free to self-host.',
+    images: ['/assets/hero-illustration.jpg'],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
