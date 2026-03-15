@@ -1,4 +1,6 @@
-import footerImg from "@/assets/footer-illustration.jpg";
+"use client";
+
+const footerImg = "/assets/footer-illustration.jpg";
 
 const footerLinks = {
   Product: ["Features", "Pricing", "Changelog", "Roadmap"],
@@ -42,10 +44,32 @@ const FooterSection = () => {
                 </div>
               ))}
             </div>
-            <div className="border-t border-primary-foreground/20 pt-4">
+            <div className="border-t border-primary-foreground/20 pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
               <p className="text-xs text-primary-foreground/50">
-                © 2026 ModelLens. All rights reserved.
+                © 2026 parixai. All rights reserved.
               </p>
+              <div className="flex items-center gap-4">
+                <a
+                  href="https://github.com/featurellm/featurellm"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                >
+                  GitHub
+                </a>
+                <a
+                  href="#pricing"
+                  className="text-xs text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                >
+                  Self-Hosting
+                </a>
+                <a
+                  href="#pricing"
+                  className="text-xs text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                >
+                  Pricing
+                </a>
+              </div>
             </div>
           </div>
         </div>

@@ -3,10 +3,11 @@ import HeroSection from "@/components/HeroSection";
 import FeatureGrid from "@/components/FeatureGrid";
 import HowItWorks from "@/components/HowItWorks";
 import ComparisonSection from "@/components/ComparisonSection";
+import PricingSection from "@/components/PricingSection";
 import CtaSection from "@/components/CtaSection";
 import FooterSection from "@/components/FooterSection";
 
-const Index = () => {
+export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -14,10 +15,9 @@ const Index = () => {
       <FeatureGrid />
       <HowItWorks />
       <ComparisonSection />
+      <PricingSection />
       <CtaSection />
       <FooterSection />
     </div>
   );
-};
-
-export default Index;
+}

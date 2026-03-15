@@ -1,5 +1,8 @@
+"use client";
+
 import { motion } from "framer-motion";
-import heroImg from "@/assets/hero-illustration.jpg";
+
+const heroImg = "/assets/hero-illustration.jpg";
 
 const HeroSection = () => {
   return (
@@ -23,9 +26,9 @@ const HeroSection = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="font-serif text-4xl sm:text-6xl md:text-7xl leading-[1.15] text-foreground max-w-4xl mx-auto"
         >
-          Know which model performs best.
+          The open-source LLM experiment runner
           <br />
-          Prove it with every prompt.
+          for product teams.
         </motion.h1>
 
         <motion.p
@@ -34,8 +37,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           className="mt-6 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed"
         >
-          A/B test your LLM-powered features across models. Track cost, latency,
-          and accuracy — then swap with confidence when better models arrive.
+          Define test sets, version prompts, and compare GPT-4o, Claude, Gemini side-by-side — with cost, latency, and quality scores. Free to self-host. Built for teams who ship.
         </motion.p>
 
         <motion.div
@@ -44,13 +46,22 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
           className="mt-8 flex items-center justify-center gap-4 flex-wrap"
         >
-          <a href="#cta" className="btn-primary">
-            Start Testing →
+          <a href="https://github.com/featurellm/featurellm" className="btn-primary">
+            Self-Host for Free →
           </a>
-          <a href="#features" className="btn-outline">
-            See Features
+          <a href="https://github.com/featurellm/featurellm" className="btn-outline">
+            View on GitHub ↗
           </a>
         </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
+          className="mt-4 text-xs text-muted-foreground"
+        >
+          Free to self-host · No credit card required
+        </motion.p>
       </div>
     </section>
   );

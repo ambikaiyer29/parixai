@@ -1,13 +1,18 @@
+"use client";
+
 import { useState, useEffect } from "react";
+import AuthModal from "@/components/AuthModal";
 
 const navLinks = [
   { label: "Features", href: "#features" },
   { label: "How It Works", href: "#how-it-works" },
+  { label: "Pricing", href: "#pricing" },
   { label: "Comparison", href: "#comparison" },
 ];
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [authModal, setAuthModal] = useState<"login" | "signup" | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -16,47 +21,52 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
-      <div
-        className={`flex items-center gap-6 rounded-full px-6 py-2.5 border transition-all duration-300 ${
-          scrolled
-            ? "bg-background/90 backdrop-blur-md border-border shadow-sm"
-            : "border-[rgba(255,255,255,0.2)] bg-[rgba(255,255,255,0.12)] backdrop-blur-sm"
-        }`}
-      >
-        <a
-          href="#"
-          className={`font-serif text-lg ${scrolled ? "text-foreground" : "text-[rgba(255,255,255,0.95)]"}`}
-        >
-          ModelLens
-        </a>
-        <div className="hidden sm:flex items-center gap-5">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className={`text-[13.6px] font-medium transition-colors ${
-                scrolled
-                  ? "text-muted-foreground hover:text-foreground"
-                  : "text-[rgba(255,255,255,0.8)] hover:text-[rgba(255,255,255,1)]"
-              }`}
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
-        <a
-          href="#cta"
-          className={`rounded-full px-4 py-1.5 text-[13.6px] font-medium border transition-colors ${
+    <>
+      <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
+        <div
+          className={`flex items-center gap-6 rounded-full px-6 py-2.5 border transition-all duration-300 ${
             scrolled
-              ? "btn-primary text-sm"
-              : "btn-ghost-dark"
+              ? "bg-background/90 backdrop-blur-md border-border shadow-sm"
+              : "bg-white/80 backdrop-blur-md border-black/8 shadow-sm"
           }`}
         >
-          Get Started
-        </a>
-      </div>
-    </nav>
+          <a
+            href="#"
+            className="font-serif text-lg text-foreground"
+          >
+            parixai
+          </a>
+          <div className="hidden sm:flex items-center gap-5">
+            {navLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="text-[13.6px] font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setAuthModal("login")}
+              className="rounded-full px-4 py-1.5 text-[13.6px] font-medium border border-border text-foreground hover:bg-secondary transition-colors"
+            >
+              Log In
+            </button>
+            <button
+              onClick={() => setAuthModal("signup")}
+              className="btn-primary !px-4 !py-1.5 text-[13.6px]"
+            >
+              Sign Up
+            </button>
+          </div>
+        </div>
+      </nav>
+      {authModal && (
+        <AuthModal mode={authModal} onClose={() => setAuthModal(null)} />
+      )}
+    </>
   );
 };
 

@@ -1,26 +1,28 @@
+"use client";
+
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
 const rows = [
   {
-    without: "Manually test each model by hand, one at a time",
-    withProduct: "Run all models in parallel with one command",
+    without: "Manually prompt each model in the playground, one at a time",
+    withProduct: "All models run in parallel against the same test cases in one experiment",
   },
   {
-    without: "Guess at costs based on token estimates",
-    withProduct: "Exact per-request cost tracking in real dollars",
+    without: "No record of why you chose a model or what you evaluated",
+    withProduct: "Recorded conclusions with full experiment history, visible to your whole team",
   },
   {
-    without: "New model comes out — start evaluation from scratch",
-    withProduct: "One-click re-run of all experiments on the new model",
+    without: "Prompt changes go live with no comparison to the previous version",
+    withProduct: "Every prompt version is tracked — compare v1 vs v2 on identical test data",
   },
   {
-    without: "Prompt changes go untested or are tested informally",
-    withProduct: "Every prompt version is a tracked experiment",
+    without: "Cost estimates are rough token math",
+    withProduct: "Interactive cost projector: enter production volume, get exact per-model cost",
   },
   {
-    without: "No audit trail of which model is used where",
-    withProduct: "Feature-level model registry with full history",
+    without: "Evaluation is gut feel or manual spot-checking",
+    withProduct: "LLM-as-a-judge with Faithfulness, Relevance, Correctness, Tone, Completeness presets",
   },
 ];
 
@@ -32,7 +34,7 @@ const ComparisonSection = () => {
     <section id="comparison" className="py-20 sm:py-32 px-6">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16">
-          <span className="section-badge">Why ModelLens</span>
+          <span className="section-badge">Why parixai</span>
           <h2 className="font-serif text-3xl sm:text-5xl text-foreground mt-4 leading-tight">
             Stop guessing.
             <br />
@@ -44,10 +46,10 @@ const ComparisonSection = () => {
           {/* Header */}
           <div className="grid grid-cols-2 border-b border-border">
             <div className="p-4 sm:p-6 text-xs uppercase tracking-wider text-muted-foreground font-medium">
-              Without
+              Without parixai
             </div>
             <div className="p-4 sm:p-6 text-xs uppercase tracking-wider text-foreground font-medium border-l border-border">
-              With ModelLens
+              With parixai
             </div>
           </div>
 

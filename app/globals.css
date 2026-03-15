@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 20% 99%;
+    --foreground: 0 0% 10%;
+
+    --card: 35 18% 93%;
+    --card-foreground: 0 0% 10%;
+
+    --popover: 40 20% 99%;
+    --popover-foreground: 0 0% 10%;
+
+    --primary: 0 0% 10%;
+    --primary-foreground: 40 20% 99%;
+
+    --secondary: 35 15% 95%;
+    --secondary-foreground: 0 0% 10%;
+
+    --muted: 35 15% 95%;
+    --muted-foreground: 40 5% 53%;
+
+    --accent: 35 18% 93%;
+    --accent-foreground: 0 0% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 35 15% 88%;
+    --input: 35 15% 88%;
+    --ring: 0 0% 10%;
+
+    --radius: 0.5rem;
+
+    /* Custom tokens */
+    --color-surface: 35 18% 93%;
+    --color-surface-raised: 35 15% 89%;
+    --color-text-secondary: 0 0% 29%;
+    --color-bg-alt: 35 15% 95%;
+
+    --font-serif: 'Instrument Serif', serif;
+    --font-sans: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 0 0% 10%;
+    --foreground: 40 20% 99%;
+    --card: 0 0% 10%;
+    --card-foreground: 40 20% 99%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 40 20% 99%;
+    --primary: 40 20% 99%;
+    --primary-foreground: 0 0% 10%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+  }
+}
+
+@layer components {
+  .section-badge {
+    @apply inline-block rounded-full px-3.5 py-1 text-xs font-medium bg-secondary text-muted-foreground;
+    font-family: var(--font-sans);
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full px-8 py-3 text-sm font-medium bg-primary text-primary-foreground transition-opacity hover:opacity-90;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center rounded-full px-8 py-3 text-sm font-medium border border-border text-text-secondary bg-transparent transition-colors hover:bg-secondary;
+  }
+
+  .btn-ghost-dark {
+    @apply inline-flex items-center justify-center rounded-full px-6 py-2 text-sm font-medium border transition-colors;
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.9);
+  }
+
+  .btn-ghost-dark:hover {
+    background: rgba(255,255,255,0.2);
+  }
+}
