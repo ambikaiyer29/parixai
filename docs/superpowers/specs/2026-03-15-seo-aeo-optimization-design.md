@@ -81,23 +81,46 @@ alternates: {
 
 ### 4. JSON-LD Structured Data
 
-**File:** `app/layout.tsx` — a single `<Script id="jsonld" type="application/ld+json">` block in `<head>` containing an array of four schemas.
+**File:** `app/layout.tsx` — a plain JSX `<script>` element rendered via `dangerouslySetInnerHTML` (NOT `next/script`). Using `next/script` can add `async`/`defer` attributes that make structured data unreliable for crawlers. Since `app/layout.tsx` is a Server Component, a plain `<script>` renders synchronously in the HTML response as Google and Perplexity expect.
+
+```tsx
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
+/>
+```
+
+The `schemas` variable is an array of four schema objects wrapped in a single `@context`:
+
+```json
+[
+  { "@context": "https://schema.org", "@type": "Organization", ... },
+  { "@context": "https://schema.org", "@type": "SoftwareApplication", ... },
+  { "@context": "https://schema.org", "@type": "FAQPage", ... },
+  { "@context": "https://schema.org", "@type": "WebSite", ... }
+]
+```
+
+Each object must include `"@context": "https://schema.org"` — omitting it causes silent validation failure in Google's Rich Results Test.
 
 #### 4a. Organization
 ```json
 {
+  "@context": "https://schema.org",
   "@type": "Organization",
   "name": "parixai",
   "url": "https://parixai.ai",
-  "logo": "https://parixai.ai/favicon.ico",
   "sameAs": ["https://github.com/featurellm/featurellm"]
 }
 ```
 Establishes the company entity. Used by Google's Knowledge Panel and AI engines for entity resolution.
 
+Note: `logo` field omitted — Google requires a raster PNG ≥112px wide; `favicon.ico` fails this requirement. Add a `logo` field once a dedicated 512×512 PNG logo asset exists in `/public/`.
+
 #### 4b. SoftwareApplication
 ```json
 {
+  "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "parixai",
   "applicationCategory": "DeveloperApplication",
@@ -113,6 +136,7 @@ Helps AI engines classify parixai when answering queries like "what tools exist 
 Maps all 6 FAQ items from `FaqSection.tsx` verbatim:
 ```json
 {
+  "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
     {
@@ -129,17 +153,13 @@ Maps all 6 FAQ items from `FaqSection.tsx` verbatim:
 #### 4d. WebSite
 ```json
 {
+  "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "parixai",
-  "url": "https://parixai.ai",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://parixai.ai/?q={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
+  "url": "https://parixai.ai"
 }
 ```
-Enables Google's sitelinks search box. Also reinforces the canonical URL signal.
+Reinforces the canonical URL signal. `potentialAction`/`SearchAction` is omitted — the site has no search functionality, and Google flags fake SearchAction schemas as a quality violation.
 
 ---
 
@@ -147,12 +167,19 @@ Enables Google's sitelinks search box. Also reinforces the canonical URL signal.
 
 | File | Change |
 |------|--------|
-| `app/layout.tsx` | Add `metadataBase`, `openGraph`, `twitter` to metadata export; add JSON-LD `<Script>` block |
+| `app/layout.tsx` | Add `metadataBase`, `openGraph`, `twitter` to metadata export; add JSON-LD `<script dangerouslySetInnerHTML>` block |
 | `app/sitemap.ts` | New file — Next.js sitemap convention |
 | `app/login/page.tsx` | Add `openGraph`, `twitter`, `alternates.canonical` to metadata |
 | `app/signup/page.tsx` | Add `openGraph`, `twitter`, `alternates.canonical` to metadata |
 
 No component changes. No content rewrites.
+
+---
+
+## Implementation Notes
+
+- **OG image dimensions:** Verify `/public/assets/hero-illustration.jpg` is actually 1200×630px before shipping. Social platforms crop or reject incorrectly sized images.
+- **robots.txt Sitemap directive:** Add `Sitemap: https://parixai.ai/sitemap.xml` to `/public/robots.txt` so crawlers discover the sitemap immediately without requiring Google Search Console submission.
 
 ---
 
