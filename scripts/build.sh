@@ -34,7 +34,13 @@ cp "$PROVIDERS_AUTH/supabase.ts"     "$AUTH_DIR/supabase.ts"
 cp "$OVERLAYS/auth_index.ts"         "$AUTH_DIR/index.ts"
 cp "$OVERLAYS/auth_middleware.ts"    "$AUTH_DIR/middleware.ts"
 
-# ── 3. Storage overlay ───────────────────────────────────────────────────────
+# ── 3. DB schema name overlay ────────────────────────────────────────────────
+DB_DIR="$CORE/apps/web/lib/db"
+echo "Overlaying DB schema name (parixai)..."
+
+cp "$OVERLAYS/db_pg_schema.ts"       "$DB_DIR/pg-schema.ts"
+
+# ── 4. Storage overlay ───────────────────────────────────────────────────────
 STORAGE_DIR="$CORE/apps/web/lib/storage"
 echo "Overlaying storage provider (Supabase Storage)..."
 
@@ -42,14 +48,14 @@ cp "$PROVIDERS_STORAGE/types.ts"     "$STORAGE_DIR/types.ts"
 cp "$PROVIDERS_STORAGE/supabase.ts"  "$STORAGE_DIR/supabase.ts"
 cp "$OVERLAYS/storage_index.ts"      "$STORAGE_DIR/index.ts"
 
-# ── 4. Cloud-only app files ──────────────────────────────────────────────────
+# ── 5. Cloud-only app files ──────────────────────────────────────────────────
 # Copy cloud-specific Next.js routes that override or supplement the core.
 if [ -d "$REPO_ROOT/cloud-routes" ]; then
   echo "Copying cloud-specific routes..."
   rsync -av "$REPO_ROOT/cloud-routes/" "$CORE/apps/web/app/"
 fi
 
-# ── 5. Remove local storage serving route ───────────────────────────────────
+# ── 6. Remove local storage serving route ───────────────────────────────────
 # The OSS repo has an /api/storage/[...path] route for serving files from local
 # storage. In the cloud build this is not needed — Supabase Storage serves
 # files directly via presigned URLs.
@@ -59,7 +65,7 @@ if [ -d "$STORAGE_ROUTE" ]; then
   rm -rf "$STORAGE_ROUTE"
 fi
 
-# ── 6. Package.json deps ─────────────────────────────────────────────────────
+# ── 7. Package.json deps ─────────────────────────────────────────────────────
 # Add Supabase packages to core's package.json and remove local-only deps.
 echo "Patching core package.json with Supabase dependencies..."
 cd "$CORE/apps/web"

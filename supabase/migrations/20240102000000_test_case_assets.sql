@@ -20,7 +20,7 @@ WITH CHECK (
   bucket_id = 'test-case-assets'
   AND (storage.foldername(name))[1] IN (
     SELECT om.org_id::text
-    FROM featurellm.org_members om
+    FROM parixai.org_members om
     WHERE om.user_id = auth.uid()
   )
 );
@@ -32,7 +32,7 @@ USING (
   bucket_id = 'test-case-assets'
   AND (storage.foldername(name))[1] IN (
     SELECT om.org_id::text
-    FROM featurellm.org_members om
+    FROM parixai.org_members om
     WHERE om.user_id = auth.uid()
   )
 );
@@ -44,15 +44,15 @@ USING (
   bucket_id = 'test-case-assets'
   AND (storage.foldername(name))[1] IN (
     SELECT om.org_id::text
-    FROM featurellm.org_members om
+    FROM parixai.org_members om
     WHERE om.user_id = auth.uid()
   )
 );
 
 -- New table
-CREATE TABLE featurellm.test_case_assets (
+CREATE TABLE parixai.test_case_assets (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  test_case_id UUID NOT NULL REFERENCES featurellm.test_cases(id) ON DELETE CASCADE,
+  test_case_id UUID NOT NULL REFERENCES parixai.test_cases(id) ON DELETE CASCADE,
   variable_name TEXT NOT NULL,
   storage_path TEXT NOT NULL,
   mime_type TEXT NOT NULL DEFAULT 'image/jpeg',
@@ -61,17 +61,17 @@ CREATE TABLE featurellm.test_case_assets (
 );
 
 -- RLS on the assets table (defence-in-depth; enforcement is in API code)
-ALTER TABLE featurellm.test_case_assets ENABLE ROW LEVEL SECURITY;
+ALTER TABLE parixai.test_case_assets ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "org_members_access_test_case_assets"
-ON featurellm.test_case_assets
+ON parixai.test_case_assets
 USING (
   test_case_id IN (
     SELECT tc.id
-    FROM featurellm.test_cases tc
-    JOIN featurellm.test_sets ts ON tc.test_set_id = ts.id
-    JOIN featurellm.projects p ON ts.project_id = p.id
-    JOIN featurellm.org_members om ON p.org_id = om.org_id
+    FROM parixai.test_cases tc
+    JOIN parixai.test_sets ts ON tc.test_set_id = ts.id
+    JOIN parixai.projects p ON ts.project_id = p.id
+    JOIN parixai.org_members om ON p.org_id = om.org_id
     WHERE om.user_id = auth.uid()
   )
 );
