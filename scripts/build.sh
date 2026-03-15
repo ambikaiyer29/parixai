@@ -40,6 +40,12 @@ echo "Overlaying DB schema name (parixai)..."
 
 cp "$OVERLAYS/db_pg_schema.ts"       "$DB_DIR/pg-schema.ts"
 
+# Patch schema.ts: replace the inline pgSchema call (older core) or the import
+# line (newer core) so the app always connects to the parixai Postgres schema.
+sed -i '' \
+  "s/pgSchema('featurellm')/pgSchema('parixai')/g" \
+  "$DB_DIR/schema.ts"
+
 # ── 4. Storage overlay ───────────────────────────────────────────────────────
 STORAGE_DIR="$CORE/apps/web/lib/storage"
 echo "Overlaying storage provider (Supabase Storage)..."
