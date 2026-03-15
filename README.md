@@ -1,73 +1,126 @@
-# Welcome to your Lovable project
+# parixai
 
-## Project info
+Cloud/SaaS build of the parixai LLM experiment dashboard, layered on top of the
+[featurellm-oss](https://github.com/your-org/featurellm-oss) open-source core via a git submodule.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+---
 
-## How can I edit this code?
+## Prerequisites
 
-There are several ways of editing your application.
+- Node.js 20+
+- [pnpm](https://pnpm.io/installation)
+- [Supabase CLI](https://supabase.com/docs/guides/cli/getting-started) (`brew install supabase/tap/supabase`)
+- Git
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## First-time setup
 
-Changes made via Lovable will be committed automatically to this repo.
+### 1. Clone with submodule
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```bash
+git clone --recurse-submodules <REPO_URL>
+cd parixai
 ```
 
-**Edit a file directly in GitHub**
+If you already cloned without `--recurse-submodules`:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+git submodule update --init --recursive
+```
 
-**Use GitHub Codespaces**
+### 2. Apply cloud overlays
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+This copies Supabase auth/storage providers into `core/`, patches schema references, and
+adds cloud-only routes:
 
-## What technologies are used for this project?
+```bash
+bash scripts/build.sh
+```
 
-This project is built with:
+### 3. Install dependencies
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```bash
+cd core/apps/web
+pnpm install
+```
 
-## How can I deploy this project?
+### 4. Configure environment variables
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+Create `core/apps/web/.env.local`:
 
-## Can I connect a custom domain to my Lovable project?
+```env
+# Supabase project
+NEXT_PUBLIC_SUPABASE_URL=https://<project-ref>.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<anon-key>
+SUPABASE_SERVICE_ROLE_KEY=<service-role-key>
 
-Yes, you can!
+# Postgres (use the pooler connection string from Supabase dashboard)
+DATABASE_URL=postgresql://postgres.<project-ref>:<password>@aws-0-<region>.pooler.supabase.com:5432/postgres
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+# App URL — must match the port the dev server runs on
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+# Internal secret for server-to-server calls — any random string
+INTERNAL_SECRET=<random-secret>
+```
+
+All values are available in the Supabase dashboard under **Project Settings → API**.
+
+### 5. Apply Supabase migrations
+
+```bash
+# From the repo root (parixai/)
+supabase link --project-ref <project-ref>
+supabase db push
+```
+
+### 6. Start the dev server
+
+```bash
+# From core/apps/web/
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+---
+
+## Updating the core submodule
+
+When `featurellm-oss` has new commits:
+
+```bash
+cd core && git pull && cd ..
+git add core
+git commit -m "chore: update core submodule"
+bash scripts/build.sh
+```
+
+---
+
+## How the overlay system works
+
+`scripts/build.sh` assembles the cloud product by:
+
+| Step | What it does |
+|------|-------------|
+| Auth overlay | Copies Supabase auth provider into `core/lib/auth/` |
+| DB schema overlay | Patches all Postgres schema references from `featurellm` → `parixai` |
+| Storage overlay | Copies Supabase Storage provider into `core/lib/storage/` |
+| Cloud routes | Copies cloud-only Next.js routes (auth callbacks, etc.) into `core/app/` |
+| Package.json | Adds `@supabase/ssr` and `@supabase/supabase-js` dependencies |
+
+The files modified inside `core/` by `build.sh` are **build artifacts** — do not commit them
+to the featurellm-oss submodule.
+
+---
+
+## Deploying to Vercel
+
+1. Set **Root Directory** to `core/apps/web`
+2. Set **Build Command** to:
+   ```
+   cd ../../.. && bash scripts/build.sh && pnpm install && pnpm build
+   ```
+3. Add all env vars from `.env.local` to the Vercel project settings.
