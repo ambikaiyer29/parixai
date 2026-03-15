@@ -40,11 +40,19 @@ echo "Overlaying DB schema name (parixai)..."
 
 cp "$OVERLAYS/db_pg_schema.ts"       "$DB_DIR/pg-schema.ts"
 
-# Patch schema.ts: replace the inline pgSchema call (older core) or the import
-# line (newer core) so the app always connects to the parixai Postgres schema.
-sed -i '' \
-  "s/pgSchema('featurellm')/pgSchema('parixai')/g" \
-  "$DB_DIR/schema.ts"
+# Patch all files that reference the Postgres schema name — both the ORM
+# pgSchema() call and any raw SQL strings — so the app always uses parixai.
+find "$CORE/apps/web" \
+  \( -name "*.ts" -o -name "*.tsx" \) \
+  -not -path "*/node_modules/*" \
+  -not -path "*/.next/*" \
+  | xargs sed -i '' \
+      -e "s/pgSchema('featurellm')/pgSchema('parixai')/g" \
+      -e "s/FROM featurellm\./FROM parixai./g" \
+      -e "s/JOIN featurellm\./JOIN parixai./g" \
+      -e "s/DELETE FROM featurellm\./DELETE FROM parixai./g" \
+      -e "s/SELECT id FROM featurellm\./SELECT id FROM parixai./g"
+echo "Schema references patched."
 
 # ── 4. Storage overlay ───────────────────────────────────────────────────────
 STORAGE_DIR="$CORE/apps/web/lib/storage"
