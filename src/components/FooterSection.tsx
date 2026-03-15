@@ -2,13 +2,6 @@
 
 const footerImg = "/assets/footer-illustration.jpg";
 
-const footerLinks = {
-  Product: ["Features", "Pricing", "Changelog", "Roadmap"],
-  Developers: ["Documentation", "API Reference", "SDK", "CLI"],
-  Resources: ["Blog", "Guides", "Community", "Support"],
-  Company: ["About", "Careers", "Privacy", "Terms"],
-};
-
 const FooterSection = () => {
   return (
     <footer className="relative w-full">
@@ -16,39 +9,30 @@ const FooterSection = () => {
         <img
           src={footerImg}
           alt="Mountain landscape illustration"
-          className="w-full h-72 sm:h-96 object-cover"
+          className="w-full h-48 sm:h-64 object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-transparent" />
         <div className="absolute inset-0 bg-primary/60" />
 
-        <div className="absolute inset-0 flex flex-col justify-end pb-8 px-6">
+        <div className="absolute inset-0 flex flex-col justify-end pb-6 px-6">
           <div className="max-w-5xl mx-auto w-full">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-8">
-              {Object.entries(footerLinks).map(([category, links]) => (
-                <div key={category}>
-                  <h4 className="text-primary-foreground font-sans text-sm font-medium mb-3">
-                    {category}
-                  </h4>
-                  <ul className="space-y-2">
-                    {links.map((link) => (
-                      <li key={link}>
-                        <a
-                          href="#"
-                          className="text-xs text-primary-foreground/70 hover:text-primary-foreground/100 transition-colors"
-                        >
-                          {link}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-            <div className="border-t border-primary-foreground/20 pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
               <p className="text-xs text-primary-foreground/50">
                 © 2026 parixai. All rights reserved.
               </p>
               <div className="flex items-center gap-4">
+                <a
+                  href="#features"
+                  className="text-xs text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                >
+                  Features
+                </a>
+                <a
+                  href="#pricing"
+                  className="text-xs text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                >
+                  Pricing
+                </a>
                 <a
                   href="https://github.com/featurellm/featurellm"
                   target="_blank"
@@ -56,18 +40,6 @@ const FooterSection = () => {
                   className="text-xs text-primary-foreground/70 hover:text-primary-foreground transition-colors"
                 >
                   GitHub
-                </a>
-                <a
-                  href="#pricing"
-                  className="text-xs text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                >
-                  Self-Hosting
-                </a>
-                <a
-                  href="#pricing"
-                  className="text-xs text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                >
-                  Pricing
                 </a>
               </div>
             </div>

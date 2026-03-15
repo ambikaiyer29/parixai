@@ -1,9 +1,9 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import FeatureGrid from "@/components/FeatureGrid";
-import HowItWorks from "@/components/HowItWorks";
 import ComparisonSection from "@/components/ComparisonSection";
 import PricingSection from "@/components/PricingSection";
+import FaqSection from "@/components/FaqSection";
 import CtaSection from "@/components/CtaSection";
 import FooterSection from "@/components/FooterSection";
 
@@ -13,9 +13,9 @@ export default function Home() {
       <Navbar />
       <HeroSection />
       <FeatureGrid />
-      <HowItWorks />
       <ComparisonSection />
       <PricingSection />
+      <FaqSection />
       <CtaSection />
       <FooterSection />
     </div>
