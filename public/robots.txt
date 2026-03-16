@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://parixai.ai/sitemap.xml
+Sitemap: https://parixai.com/sitemap.xml
