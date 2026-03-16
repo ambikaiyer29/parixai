@@ -46,7 +46,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
           className="mt-8 flex items-center justify-center gap-4 flex-wrap"
         >
-          <a href="https://app.parixai.ai/signup" className="btn-primary">
+          <a href="https://app.parixai.com/signup" className="btn-primary">
             Get Started Free →
           </a>
           <a href="https://github.com/ambikaiyer29/featurellm-oss" className="btn-outline">

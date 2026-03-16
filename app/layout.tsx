@@ -4,16 +4,16 @@ import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://parixai.ai'),
+  metadataBase: new URL('https://parixai.com'),
   title: "parixai — LLM Experiment Runner for Product Teams",
   description: "Define test sets, version prompts, and compare GPT-4o, Claude, Gemini side-by-side. Free to self-host.",
   alternates: {
-    canonical: 'https://parixai.ai',
+    canonical: 'https://parixai.com',
   },
   openGraph: {
     title: 'parixai — LLM Experiment Runner for Product Teams',
     description: 'Define test sets, version prompts, and compare GPT-4o, Claude, Gemini side-by-side. Free to self-host.',
-    url: 'https://parixai.ai',
+    url: 'https://parixai.com',
     siteName: 'parixai',
     images: [
       {
@@ -38,7 +38,7 @@ const jsonLd = [
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "parixai",
-    "url": "https://parixai.ai",
+    "url": "https://parixai.com",
     "sameAs": ["https://github.com/featurellm/featurellm"],
   },
   {
@@ -53,7 +53,7 @@ const jsonLd = [
       "priceCurrency": "USD",
     },
     "description": "Open-source LLM experiment runner for product teams. Run the same prompt across GPT-4o, Claude, Gemini, and Llama simultaneously. Track latency, cost, and accuracy. Version prompts. Compare results side-by-side.",
-    "url": "https://parixai.ai",
+    "url": "https://parixai.com",
   },
   {
     "@context": "https://schema.org",
@@ -113,7 +113,7 @@ const jsonLd = [
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "parixai",
-    "url": "https://parixai.ai",
+    "url": "https://parixai.com",
   },
 ]
 

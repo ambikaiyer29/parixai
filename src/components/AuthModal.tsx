@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-const APP_URL = "https://app.parixai.ai";
+const APP_URL = "https://app.parixai.com";
 
 interface AuthModalProps {
   mode: "login" | "signup";

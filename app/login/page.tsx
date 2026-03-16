@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   title: "Log In — parixai",
   description: "Log in to your parixai account.",
   alternates: {
-    canonical: 'https://parixai.ai/login',
+    canonical: 'https://parixai.com/login',
   },
   openGraph: {
     title: 'Log In — parixai',
     description: 'Log in to your parixai account.',
-    url: 'https://parixai.ai/login',
+    url: 'https://parixai.com/login',
     siteName: 'parixai',
     type: 'website',
   },
